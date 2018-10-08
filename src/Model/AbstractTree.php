@@ -217,6 +217,40 @@ abstract class AbstractTree implements TreeInterface
         return $node->isLeaf() ? false : $this->find($id, $node->getChild($position));
     }
 
+     /**
+     * Find the nearest node by id.
+     * Recursive operation, the optional $node should not be given
+     *
+     * @param int $id
+     * @param Node|null $node
+     * @return Node
+     */
+    public function findNearest($id, Node $node = null)
+    {
+        // Initialize if first iteration
+        if (null === $node) {
+            $node = $this->root;
+            $this->nearestDifference = INF;
+            $this->nearestNode = false;
+        }
+        
+        if(abs($node->getId() - $id) < $this->nearestDifference){
+            $this->nearestDifference = $node->difference($id);
+            $this->nearestNode = $node;
+        }
+        
+        // If the id is equal, it's our match !
+        $position = $this->compare($node->getId(), $id);
+        if (0 === $position) {
+            return $node;
+        }
+        
+        // Else if it's a nil, return false, else recursion
+        $nextNode = $node->getChild($position);
+        return !isset($nextNode) ? $this->nearestNode : $this->findNearest($id, $nextNode);
+    }
+
+
     /**
      * @param Node $node
      * @param int $position
@@ -462,4 +496,5 @@ abstract class AbstractTree implements TreeInterface
      * @return bool
      */
     protected abstract function compare($idA, $idB);
+
 }

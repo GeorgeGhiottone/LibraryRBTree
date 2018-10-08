@@ -180,6 +180,15 @@ abstract class AbstractNode implements NodeInterface
         return $this;
     }
 
+     /**
+     * difference between two ids
+     * $id has to be the same type of node's id
+     *
+     * @param mixed $idA
+     * @return int
+     */
+    protected abstract function difference($id);
+
 
     /**
      * =========================================================================

@@ -65,4 +65,14 @@ class Node extends Model\AbstractNode
         $this->value = $value;
         return $this;
     }
+
+     /**
+     * @param int $value
+     * @return int
+     */
+    public function difference($value)
+    {
+        $diff = abs($this->getId() - $value);
+        return $diff;
+    }
 }
